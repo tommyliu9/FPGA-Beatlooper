@@ -1,0 +1,62 @@
+	module key(clk, dat, psclk, freq);
+	input clk;
+	input dat;
+	input psclk;
+	wire [7:0] scan_code;
+	wire scan_ready;
+	wire read;
+	wire reset = 1'b0;
+	output reg [9:0] freq;
+	
+	oneshot pulser(
+	  .pulse_out(read),
+	  .trigger_in(scan_ready),
+	  .clk(clk)
+	);
+	
+	keyboard kbd(
+	  .keyboard_clk(psclk),
+	  .keyboard_data(dat),
+	  .clock50(clk),
+	  .reset(reset),
+	  .read(read),
+	  .scan_ready(scan_ready),
+	  .scan_code(scan_code)
+	);
+	
+	
+	
+	always@(scan_code)
+	begin
+		case(scan_code)
+			8'h1A: freq <= 9'd261; //Z is C
+			8'h1F: freq <= 9'd277; //S is C#
+			8'h2D: freq <= 9'd293; //X is D
+			8'h20: freq <= 9'd311; //D is D#
+			8'h2E: freq <= 9'd329; //C is E
+			8'h2F: freq <= 9'd349; //V is F
+			8'h22: freq <= 9'd369; //G is F#
+			8'h30: freq <= 9'd391; //B is G
+			8'h23: freq <= 9'd415; //H is G#
+			8'h31: freq <= 9'd440; //N is A
+			8'h24: freq <= 9'd466; //J is A#
+			8'h32: freq <= 9'd493; //M is B
+			8'h33: freq <= 9'd523; //, is C
+			8'hAC: freq <= 0; //Z is C
+			8'h9F: freq <= 0; //S is C#
+			8'hAD: freq <= 0; //X is D
+			8'hA0: freq <= 0; //D is D#
+			8'hAE: freq <= 0; //C is E
+			8'hAF: freq <= 0; //V is F
+			8'hA2: freq <= 0; //G is F#
+			8'hB0: freq <= 0; //B is G
+			8'hA3: freq <= 0; //H is G#
+			8'hB1: freq <= 0; //N is A
+			8'hA4: freq <= 0; //J is A#
+			8'hB2: freq <= 0; //M is B
+			8'hB3: freq <= 0; //, is C
+			default: freq <= 0;
+		endcase
+	end
+	
+endmodule

@@ -1,0 +1,33 @@
+module looperModule(clk, reset, dataIn, trackChooser, trackCount, notesOut);
+	input clk, reset;
+	input [7:0] trackChooser, dataIn;
+	input [6:0] trackCount;
+	output [63:0] notesOut;
+	
+	// Connects each of the 8 notes to the output
+	wire [7:0] allNotes [7:0];
+	genvar c;
+		generate        
+			for (c = 0; c < 8 ; c = c + 1) begin: noteAssigner
+				assign notesOut[((c+1)*8)-1:c*8] = trackChooser[c] ? allNotes[c] : 8'b0;  
+			end
+		endgenerate
+	
+	// Creates the 8 track modules
+	genvar i;
+		generate
+			for (i=0; i < 8; i = i + 1) begin : trackGenerator
+				noteMemory track (
+				  .address(trackCount),
+				  .clock(clk),
+				  .data(dataIn),
+				  .wren(trackChooser[i]),
+				  .q(allNotes[i])
+				);
+			end
+		endgenerate
+		
+	
+	
+endmodule
+

@@ -1,0 +1,2 @@
+Warning (10268): Verilog HDL information at keyboard.v(52): always construct contains both blocking and non-blocking assignments File: //SRVD/Homes$/songryan/Desktop/STuff/keyboard.v Line: 52
+Warning (10268): Verilog HDL information at audio_out.v(134): always construct contains both blocking and non-blocking assignments File: //SRVD/Homes$/songryan/Desktop/STuff/audio_out.v Line: 134
